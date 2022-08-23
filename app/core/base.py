@@ -4,4 +4,4 @@
 # поставьте inline-комментарий со специальным обозначением noqa
 # (_NO Quality Assurance_: «Без обеспечения качества»):
 from app.core.db import Base  # noqa
-from app.models.charityproject import CharityProject  # noqa
+from app.models import CharityProject, Donation, User  # noqa
