@@ -20,21 +20,6 @@ class DonationCreate(BaseModel):
         }
 
 
-# class DonationCreate(BaseModel):
-#     """Pydantic-модель для создания нового пожертвования."""
-#     pass
-
-# class DonationDBUser(DonationCreate):
-#     """Pydantic-схема, для описания объекта, полученного из БД.
-#     для зарегистрированного пользователя.
-#     """
-#     id: int
-#     create_date: datetime
-#
-#
-#     class Config:
-#         orm_mode = True
-
 class DonationDB(DonationCreate):
     """Pydantic-схема, для описания объекта, полученного из БД.
     для зарегистрированного пользователя.
@@ -51,19 +36,7 @@ class DonationAllDB(DonationDB):
     Pydantic-схема, для описания объекта, полученного из БД
     для суперюзера.
     """
-    user_id: int
+    user_id: Optional[int]
     invested_amount: int
     fully_invested: bool
     close_date: Optional[datetime]
-
-
-# class DonationDBG(BaseModel):
-#     """Pydantic-схема, для описания объекта, полученного из БД.
-#     для зарегистрированного пользователя.
-#     """
-#     full_amount: PositiveInt
-#     id: int
-#     create_date: datetime
-#
-#     class Config:
-#         orm_mode = True

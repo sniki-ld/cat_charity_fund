@@ -66,7 +66,7 @@ async def get_all_charity_projects(
     dependencies=[Depends(current_superuser)]
 )
 async def update_charity_project(
-        charity_project_id: int,
+        project_id: int,
         charity_project_in: CharityProjectUpdate,
         session: AsyncSession = Depends(get_async_session),
 ):
@@ -77,7 +77,7 @@ async def update_charity_project(
     Только для суперюзеров.
     """
     charity_project_db = await check_charity_project_before_edit(
-        charity_project_id=charity_project_id,
+        project_id=project_id,
         charity_project_in=charity_project_in,
         session=session
     )
@@ -93,11 +93,11 @@ async def update_charity_project(
 @router.delete(
     '/{project_id}',
     response_model=CharityProjectDB,
-    response_model_exclude_none=True,
+    # response_model_exclude_none=True,
     dependencies=[Depends(current_superuser)]
 )
 async def remove_charity_project(
-        charity_project_id: int,
+        project_id: int,
         session: AsyncSession = Depends(get_async_session),
 ):
     """
@@ -107,7 +107,7 @@ async def remove_charity_project(
     Только для суперюзеров.
     """
     charity_project = await check_charity_project_before_delete(
-        charity_project_id=charity_project_id,
+        project_id=project_id,
         session=session
     )
 

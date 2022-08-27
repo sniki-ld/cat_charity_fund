@@ -1,46 +1,35 @@
 # app/schemas/charity_project.py
 from datetime import datetime
-from typing import Optional, Union
+from typing import Optional
 
-from pydantic import BaseModel, Field, PositiveInt, NonNegativeInt, Extra
-
-
-# class CharityProjectBase(BaseModel):
-#     """Базовый класс Pydantic-модели."""
-#
-# name: Optional[str] = Field(None, min_length=1, max_length=100)
-# description: Optional[str] = Field(None, min_length=1)
-# full_amount: Optional[PositiveInt]
-
-# class Config:
-#     extra = Extra.forbid
-#     schema_extra = {
-#         'example': {
-#             'name': 'Много вкусного',
-#             'description': 'Средства для покупки корма',
-#             'full_amount': 1000
-#         }
-#     }
+from pydantic import BaseModel, Field, PositiveInt, Extra
 
 
-class CharityProjectCreate(BaseModel):
+class CharityProjectBase(BaseModel):
+    """Базовый класс Pydantic-модели."""
+    name: Optional[str] = Field(None, min_length=1, max_length=100)
+    description: Optional[str] = Field(None, min_length=1)
+    full_amount: Optional[PositiveInt]
+
+    class Config:
+        extra = Extra.forbid
+        # schema_extra = {
+        #     'example': {
+        #         'name': 'Много вкусного',
+        #         'description': 'Средства для покупки корма',
+        #         'full_amount': 1000
+        #     }
+        # }
+
+
+class CharityProjectCreate(CharityProjectBase):
     """Pydantic-модель для создания нового благотворительного проекта."""
     name: str = Field(..., min_length=1, max_length=100)
     description: str = Field(..., min_length=1)
     full_amount: PositiveInt
 
-    class Config:
-        extra = Extra.forbid
-        schema_extra = {
-            'example': {
-                'name': 'Много вкусного',
-                'description': 'Средства для покупки корма',
-                'full_amount': 1000
-            }
-        }
 
-
-class CharityProjectDB(CharityProjectCreate):
+class CharityProjectDB(CharityProjectBase):
     """Pydantic-схема, для описания объекта, полученного из БД"""
     id: int
     invested_amount: int
@@ -52,18 +41,6 @@ class CharityProjectDB(CharityProjectCreate):
         orm_mode = True
 
 
-class CharityProjectUpdate(BaseModel):
+class CharityProjectUpdate(CharityProjectBase):
     """Pydantic-модель для обновления благотворительного проекта."""
-    name: Optional[str] = Field(min_length=1, max_length=100)
-    description: Optional[str] = Field(min_length=1)
-    full_amount: Optional[PositiveInt]
-
-    class Config:
-        extra = Extra.forbid
-        schema_extra = {
-            'example': {
-                'name': 'Много вкусного и интересного',
-                'description': 'Средства для покупки корма и игрушек',
-                'full_amount': 500
-            }
-        }
+    pass
