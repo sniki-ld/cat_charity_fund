@@ -13,13 +13,6 @@ class CharityProjectBase(BaseModel):
 
     class Config:
         extra = Extra.forbid
-        # schema_extra = {
-        #     'example': {
-        #         'name': 'Много вкусного',
-        #         'description': 'Средства для покупки корма',
-        #         'full_amount': 1000
-        #     }
-        # }
 
 
 class CharityProjectCreate(CharityProjectBase):
@@ -27,6 +20,15 @@ class CharityProjectCreate(CharityProjectBase):
     name: str = Field(..., min_length=1, max_length=100)
     description: str = Field(..., min_length=1)
     full_amount: PositiveInt
+
+    class Config:
+        schema_extra = {
+            'example': {
+                'name': 'Много вкусного',
+                'description': 'Средства для покупки корма',
+                'full_amount': 1000
+            }
+        }
 
 
 class CharityProjectDB(CharityProjectBase):

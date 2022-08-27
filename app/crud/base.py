@@ -36,25 +36,16 @@ class CRUDBase:
         db_objs = await session.execute(select(self.model))
         return db_objs.scalars().all()
 
-    #
-    # async def get_not_closed_object(
-    #         self,
-    #         session: AsyncSession
-    # ):
-    #     """Получить все незакрытые объекты сортированные по дате их создания."""
-    #     # not_closed_obj = await session.execute(select(self.model).where(
-    #     #     self.model.fully_invested.is_(False)))
-    #     # charity_projects = await session.scalars(
-    #     #     select(self.model).where(self.model.fully_invested.is_(False)))
-    #     #         .order_by(self.model.create_date)
-    #     # return not_closed_obj.scalars().order_by(self.model.create_date).all()
-    #     not_closed_objs = await session.scalars(
-    #         select(
-    #             self.model
-    #         ).where(
-    #             self.model.fully_invested.is_(False)
-    #         ).order_by('create_date'))
-    #     return not_closed_objs.all()
+
+    async def get_not_closed_object(
+            self,
+            session: AsyncSession
+    ):
+        """Получить все незакрытые объекты сортированные по дате их создания."""
+        not_closed_obj = await session.execute(select(self.model).where(
+            self.model.fully_invested.is_(False)).order_by(self.model.create_date))
+
+        return not_closed_obj.scalars().all()
 
     async def create(
             self,
@@ -109,8 +100,8 @@ class CRUDBase:
         await session.commit()
         return db_obj
 
-    async def get_not_closed_object(self, session: AsyncSession):
-        charity_projects = await session.scalars(
-            select(self.model).where(not_(self.model.fully_invested)).order_by(self.model.create_date)
-        )
-        return charity_projects
+    # async def get_not_closed_object(self, session: AsyncSession):
+    #     charity_projects = await session.scalars(
+    #         select(self.model).where(not_(self.model.fully_invested)).order_by(self.model.create_date)
+    #     )
+    #     return charity_projects
