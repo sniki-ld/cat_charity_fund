@@ -3,11 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_async_session
 from app.crud.donation import donation_crud
-from app.schemas.donation import DonationCreate, DonationDB, DonationForSuperuserDB
+from app.schemas.donation import DonationCreate, DonationDB, DonationAllDB
 # Добавьте импорт зависимости, определяющей,
 # что текущий пользователь - суперюзер.
 from app.core.user import current_user, current_superuser
 from app.models import User
+from app.services.distribution_investments import investment_process
 
 router = APIRouter()
 
@@ -25,22 +26,12 @@ router = APIRouter()
 # Этот параметр принимает список объектов, даже если передан всего один элемент.
 # Добавим параметр dependencies=[Depends(current_superuser)] к запросу на
 # получение списока всех бронирований:
-@router.post('/', response_model=DonationDB)
-async def create_donation(
-        reservation: DonationCreate,
-        session: AsyncSession = Depends(get_async_session),
-):
-    new_donation = await donation_crud.create(
-        reservation, session
-    )
-    return new_donation
 
 
 @router.get(
     '/',
-    response_model=list[DonationForSuperuserDB],
+    response_model=list[DonationAllDB],
     response_model_exclude_none=True,
-    # Добавьте вызов зависимости при обработке запроса.
     dependencies=[Depends(current_superuser)]
 )
 async def get_all_donations(
@@ -55,7 +46,8 @@ async def get_all_donations(
 
 @router.get(
     '/my',
-    response_model=list[DonationDB]
+    response_model=list[DonationDB],
+    response_model_exclude_none=True
 )
 async def get_my_donations(
         session: AsyncSession = Depends(get_async_session),
@@ -89,6 +81,6 @@ async def create_donation(
     new_donation = await donation_crud.create(
         obj_in=donation_in, session=session, user=user
     )
-    # await allocate_donation_funds(session=session)
+    await investment_process(session=session)
     await session.refresh(new_donation)
     return new_donation

@@ -396,7 +396,7 @@ def test_update_charity_project_full_amount_equal_invested_amount(superuser_clie
 @pytest.mark.parametrize(
     "json",
     [
-        {"desctiption": ""},
+        {"description": ""},
         {"name": ""},
         {"full_amount": ""},
         {"invested_amount": 100},
