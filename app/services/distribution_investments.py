@@ -40,10 +40,11 @@
 from datetime import datetime
 from typing import Union
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.crud.charity_project import charity_project_crud
 from app.crud.donation import donation_crud
 from app.models import CharityProject, Donation
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 def close_fully_invested_object(obj: Union[CharityProject, Donation]) -> None:
