@@ -41,8 +41,8 @@ async def create_first_superuser():
     Корутина, проверяющая, указаны ли в настройках данные для суперюзера.
     Если да, то вызывается корутина create_user для создания суперпользователя.
     """
-    if (settings.first_superuser_email is not None
-            and settings.first_superuser_password is not None):
+    if (settings.first_superuser_email is not None and
+            settings.first_superuser_password is not None):
         await create_user(
             email=settings.first_superuser_email,
             password=settings.first_superuser_password,
