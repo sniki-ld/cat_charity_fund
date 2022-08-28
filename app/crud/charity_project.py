@@ -1,7 +1,5 @@
-# app/crud/charity_project.py
 from app.models.charity_project import CharityProject
 
-from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -16,7 +14,7 @@ class CRUDCharityProject(CRUDBase):
             charity_project_name: str,
             session: AsyncSession,
     ):
-        """Возвращает проект по его названию."""
+        """Вернуть проект по его названию."""
         db_charity_project = await session.execute(
             select(self.model).where(
                 self.model.name == charity_project_name

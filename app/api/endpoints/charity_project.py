@@ -1,4 +1,3 @@
-# app/api/charity_project.py
 from fastapi import APIRouter, Depends
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -7,7 +6,7 @@ from app.api.validators import (check_name_duplicate,
                                 check_charity_project_before_edit,
                                 check_charity_project_before_delete)
 from app.core.db import get_async_session
-# Вместо импортов 6 функций импортируйте объект charity_project_crud.
+
 from app.core.user import current_superuser
 from app.crud.charity_project import charity_project_crud
 from app.schemas.charity_project import CharityProjectUpdate, CharityProjectCreate, CharityProjectDB

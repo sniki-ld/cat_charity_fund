@@ -1,5 +1,3 @@
-# app/api/validators.py
-
 from fastapi import HTTPException
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,9 +11,11 @@ async def check_name_duplicate(
         charity_project_name: str,
         session: AsyncSession,
 ) -> None:
-    """Проверить наличие дубликата названия проекта."""
+    """Проверить название проекта на уникальность ."""
     charity_project = await charity_project_crud.get_charity_project_by_name(
-        charity_project_name=charity_project_name, session=session)
+        charity_project_name=charity_project_name,
+        session=session
+    )
     if charity_project is not None:
         raise HTTPException(
             status_code=400,
@@ -28,7 +28,10 @@ async def check_charity_project_exists(
         session: AsyncSession,
 ) -> CharityProject:
     """Проверить наличие проекта в БД по id."""
-    charity_project = await charity_project_crud.get(obj_id=project_id, session=session)
+    charity_project = await charity_project_crud.get(
+        obj_id=project_id,
+        session=session
+    )
     if charity_project is None:
         raise HTTPException(
             status_code=404,
@@ -42,9 +45,10 @@ async def check_charity_project_before_edit(
         charity_project_in: CharityProjectUpdate,
         session: AsyncSession
 ) -> CharityProject:
-
+    """Проверить проект перед редактированием."""
     charity_project = await check_charity_project_exists(
-        project_id=project_id, session=session
+        project_id=project_id,
+        session=session
     )
     if charity_project.close_date is not None:
         raise HTTPException(
@@ -61,7 +65,10 @@ async def check_charity_project_before_edit(
         )
 
     new_name = charity_project_in.name
-    await check_name_duplicate(charity_project_name=new_name, session=session)
+    await check_name_duplicate(
+        charity_project_name=new_name,
+        session=session
+    )
     return charity_project
 
 
@@ -69,8 +76,10 @@ async def check_charity_project_before_delete(
         project_id: int,
         session: AsyncSession
 ) -> CharityProject:
+    """Проверить проект перед удалением."""
     charity_project = await check_charity_project_exists(
-        project_id=project_id, session=session
+        project_id=project_id,
+        session=session
     )
 
     if charity_project.invested_amount > 0:

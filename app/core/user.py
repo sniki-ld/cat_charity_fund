@@ -25,7 +25,7 @@ bearer_transport = BearerTransport(tokenUrl='auth/jwt/login')  # Определ�
 
 
 def get_jwt_strategy() -> JWTStrategy:
-    """Определяем стратегию: хранение токена в виде JWT."""
+    """Определить стратегию: хранение токена в виде JWT."""
     return JWTStrategy(secret=settings.secret, lifetime_seconds=3600)
 
 
@@ -61,7 +61,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
 
 async def get_user_manager(user_db=Depends(get_user_db)):
-    """Корутина, возвращающая объект класса UserManager."""
+    """Вернуть объект класса UserManager."""
     yield UserManager(user_db)
 
 fastapi_users = FastAPIUsers[User, int](

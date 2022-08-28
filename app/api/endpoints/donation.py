@@ -4,28 +4,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.db import get_async_session
 from app.crud.donation import donation_crud
 from app.schemas.donation import DonationCreate, DonationDB, DonationAllDB
-# Добавьте импорт зависимости, определяющей,
-# что текущий пользователь - суперюзер.
+
 from app.core.user import current_user, current_superuser
 from app.models import User
 from app.services.distribution_investments import investment_process
 
 router = APIRouter()
-
-
-#
-# """Получение объекта пользователя в запросе
-# Чтобы сохранить id текущего пользователя в столбце с внешним ключом,
-# нужно получить объект пользователя из запроса. Для этого используется система DI."""
-#  в параметры эндпоинта мы добавили зависимость с пользователем (DI)
-
-# Если необходимо ограничить доступ для неавторизованных пользователей к
-# определённому эндпоинту, но при этом объект пользователя не требуется передавать
-# в функцию, обрабатывающую запрос — класс Depends следует указать не в
-# параметрах функции, а в декораторе эндпоинта, в параметре dependencies.
-# Этот параметр принимает список объектов, даже если передан всего один элемент.
-# Добавим параметр dependencies=[Depends(current_superuser)] к запросу на
-# получение списока всех бронирований:
 
 
 @router.get(
@@ -51,14 +35,12 @@ async def get_all_donations(
 )
 async def get_my_donations(
         session: AsyncSession = Depends(get_async_session),
-        # В этой зависимости получаем обычного пользователя, а не суперюзера.
         user: User = Depends(current_user)
 ):
     """
-    Получить список всех пожертвований для текущего пользователя.
+    Вернуть список всех пожертвований текущего пользователя.
     Только для авторизованных пользователей.
     """
-    # Вызываем созданный метод.
     return await donation_crud.get_my_donations(
         session=session, user=user
     )

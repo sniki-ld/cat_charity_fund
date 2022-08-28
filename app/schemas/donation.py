@@ -1,4 +1,3 @@
-# app/schemas/donation.py
 from datetime import datetime
 from typing import Optional
 

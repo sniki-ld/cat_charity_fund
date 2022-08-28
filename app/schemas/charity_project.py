@@ -1,4 +1,3 @@
-# app/schemas/charity_project.py
 from datetime import datetime
 from typing import Optional
 
